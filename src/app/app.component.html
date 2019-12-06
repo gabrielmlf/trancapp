@@ -1,0 +1,13 @@
+<div class="row">
+  <div *ngIf="aberto">
+    <div class="alert alert-success" role="alert">
+      A porta esta destrancada!
+    </div>
+  </div>
+  <div *ngIf="!aberto">
+    <div class="alert alert-danger" role="alert">
+      Digite a senha para destrancar.
+    </div>
+  </div>
+  <button class="btn btn-primary" click="[aberto]=![aberto]">Mudar estado</button>
+</div>
