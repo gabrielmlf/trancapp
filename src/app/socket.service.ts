@@ -1,31 +1,22 @@
 
 import { Injectable } from '@angular/core';
-import * as socketIo from 'socket.io-client';
+import { Socket } from 'ngx-socket-io';
+import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs';
-
 const SERVER_URL = 'mqtt://test.mosquitto.org';
 
 @Injectable()
 export class SocketService {
-  public socket;
+  constructor(private socket: Socket) { }
 
-  public initSocket(): void {
-    this.socket = socketIo(SERVER_URL);
+  sendMessage(msg: string) {
+    this.socket.emit("message", msg);
   }
-
-  public send(message: string): void {
-    this.socket.emit('message', message);
+  getMessages() {
+    return Observable.create((observer) => {
+      this.socket.on('LOCK', (message) => {
+        observer.next(message);
+      });
+    });
   }
-
-  // public onMessage(): Observable<Message> {
-  //     return new Observable<Message>(observer => {
-  //         this.socket.on('message', (data: Message) => observer.next(data));
-  //     });
-  // }
-
-  // public onEvent(event: Event): Observable<any> {
-  //     return new Observable<Event>(observer => {
-  //         this.socket.on(event, () => observer.next());
-  //     });
-  // }
 }

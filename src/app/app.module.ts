@@ -1,22 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {
-  IMqttMessage,
-  MqttModule,
-  IMqttServiceOptions
-} from 'ngx-mqtt';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { SocketService } from './socket.service';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
-
-export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
-
-  url: "mqtt://test.mosquitto.org"
-};
-
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 @NgModule({
   declarations: [
     AppComponent
@@ -24,8 +15,8 @@ export const MQTT_SERVICE_OPTIONS: IMqttServiceOptions = {
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MqttModule.forRoot(MQTT_SERVICE_OPTIONS),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    SocketIoModule.forRoot(config)
   ],
   providers: [
     SocketService
